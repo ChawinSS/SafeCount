@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            font-size: 18px;
+            padding: 0px auto;
+        }
+
+        #header {
+            text-align: center;
+            padding: 10px;
+            background-color: #3085C3;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #section1 {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #counting-options label {
+            display: inline-block;
+            cursor: pointer;
+            color: #333;
+            padding-right: 10px;
+            /* Adjusted padding */
+        }
+
+        #section2 {
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            text-align: center;
+            outline: none;
+            border: none;
+        }
+
+        #screen {
+            margin-left: 2%;
+            /* Adjusted margin */
+            background: rgba(59, 176, 50, 0.09);
+            width: 96%;
+            /* Adjusted width */
+            padding: 5px;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.09) 0px 4px 8px 0px inset;
+        }
+
+        #display1 {
+            color: black;
+            font-size: 30px;
+            padding-bottom: 9px;
+        }
+
+        #display2 {
+            padding-bottom: 10px;
+        }
+
+        #display3 {
+            padding-bottom: 10px;
+        }
+
+        #counting-sheet {
+            display: flex;
+            justify-content: space-around;
+            max-width: 900px;
+            margin: 10px auto;
+        }
+
+        .section3 {
+            margin-bottom: 50px;
+        }
+
+        .container {
+            flex: 1;
+            margin: 0 3%;
+            /* Adjusted margin */
+
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 0.5%;
+            text-align: center;
+        }
+
+        th {
+            border: 1px solid #ddd;
+            background-color: #f2f2f2;
+            padding: 1%;
+        }
+
+        .totalsub {
+            margin-top: 1%;
+        }
+
+        #counting-sheet input {
+            font-size: 1rem;
+            text-align: center;
+            background: rgba(59, 176, 150, 0.05);
+            border: 1px solid rgba(59, 176, 150, 0.05);
+            border-radius: 5px;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        /* Styles for screens between 601px and 900px wide */
+        @media (min-width: 601px) and (max-width: 900px) {
+            #counting-sheet {
+                flex-direction: column;
+                /* Change to column layout */
+                align-items: center;
+                /* Optional: Center the containers */
+            }
+
+            .container {
+                margin: 15px;
+                max-width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            #counting-sheet {
+                flex-direction: column;
+                /* Change to column layout */
+                align-items: center;
+                /* Optional: Center the containers */
+            }
+
+            .container {
+                margin: 15px;
+                max-width: 100%;
+            }
+        }
+    </style>
+    <title>Counting Safe CHS</title>
+</head>
+
+<body>
+
+    <div id="header">Counting Safe CHS</div>
+    <div id="section1">
+        <div id="counting-options">
+            <input type="radio" name="countingOption" value="2000" checked>
+            <label>€2000</label>
+        </div>
+    </div>
+    <div id="section2">
+        <div id="screen">
+            <div id="display1"></div>
+            <div id="display2"></div>
+            <div id="display3"></div>
+        </div>
+    </div>
+
+    <div class="section3">
+        <div id="counting-sheet">
+            <div class="container">
+                <h2>Bills</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Denomination</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>€200</td>
+                            <td><input type="number" id="euro200" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro100')"></td>
+                            <td id="total200"></td>
+                        </tr>
+                        <tr>
+                            <td>€100</td>
+                            <td><input type="number" id="euro100" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro50')"></td>
+                            <td id="total100"></td>
+                        </tr>
+                        <tr>
+                            <td>€50</td>
+                            <td><input type="number" id="euro50" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro20')"></td>
+                            <td id="total50"></td>
+                        </tr>
+                        <tr>
+                            <td>€20</td>
+                            <td><input type="number" id="euro20" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro10')"></td>
+                            <td id="total20"></td>
+                        </tr>
+                        <tr>
+                            <td>€10</td>
+                            <td><input type="number" id="euro10" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro5')"></td>
+                            <td id="total10"></td>
+                        </tr>
+                        <tr>
+                            <td>€5</td>
+                            <td><input type="number" id="euro5" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro2')"></td>
+                            <td id="total5"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="totalsub">
+                    <p>Total: <span id="totalsub-bill">100</span></p>
+                </div>
+            </div>
+
+            <div class="container">
+                <h2>Coins</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Denomination</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Coins -->
+                        <tr>
+                            <td>€2</td>
+                            <td><input type="number" id="euro2" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro1')"></td>
+                            <td id="total2"></td>
+                        </tr>
+                        <tr>
+                            <td>€1</td>
+                            <td><input type="number" id="euro1" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro05')"></td>
+                            <td id="total1"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.50</td>
+                            <td><input type="number" id="euro05" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro02')"></td>
+                            <td id="total05"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.20</td>
+                            <td><input type="number" id="euro02" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro01')"></td>
+                            <td id="total02"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.10</td>
+                            <td><input type="number" id="euro01" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro005')"></td>
+                            <td id="total01"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.05</td>
+                            <td><input type="number" id="euro005" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro002')"></td>
+                            <td id="total005"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.02</td>
+                            <td><input type="number" id="euro002" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euro001')"></td>
+                            <td id="total002"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.01</td>
+                            <td><input type="number" id="euro001" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()"></td>
+                            <td id="total001"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="totalsub">
+                    <p>Total: <span id="totalsub-coin">100</span></p>
+                </div>
+            </div>
+            <div class="container">
+                <h2>Coin Stack</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Denomination</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Coins Stack-->
+                        <tr>
+                            <td>€2</td>
+                            <td><input type="number" id="euroStack2" min="0" value="100" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack1')"></td>
+                        </tr>
+                        <tr>
+                            <td>€1</td>
+                            <td><input type="number" value="100" id="euroStack1" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack05')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.50</td>
+                            <td><input type="number" id="euroStack05" value="50" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack02')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.20</td>
+                            <td><input type="number" value="16" id="euroStack02" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack01')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.10</td>
+                            <td><input type="number" value="16" id="euroStack01" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack005')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.05</td>
+                            <td><input type="number" id="euroStack005" value="2.50" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack002')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.02</td>
+                            <td><input type="number" id="euroStack002" value="4" min="0" placeholder="Enter Number"
+                                    oninput="updateTotal()" onkeypress="moveToNextInput(event, 'euroStack001')"></td>
+                        </tr>
+                        <tr>
+                            <td>€0.01</td>
+                            <td><input type="number" id="euroStack001" min="0" value="3.5" placeholder="Enter Number"
+                                    oninput="updateTotal()">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="totalsub">
+                    <p>Total: <span id="totalsub-CoinStack">100</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function moveToNextInput(event, nextInputId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById(nextInputId).focus();
+            }
+        }
+
+        function updateTotal() {
+            // Get the input value euro200
+            var inputAmount200 = document.getElementById('euro200').value;
+
+            // Calculate the total amount
+            var totalAmount200 = inputAmount200 * 200;
+
+            // Update the total amount in the "total200" element
+            document.getElementById('total200').innerText = '€' + totalAmount200;
+
+            // Get the input value euro100
+            var inputAmount100 = document.getElementById('euro100').value;
+
+            // Calculate the total amount
+            var totalAmount100 = inputAmount100 * 100;
+
+            // Update the total amount in the "total100" element
+            document.getElementById('total100').innerText = '€' + totalAmount100;
+
+            // Get the input value euro50
+            var inputAmount50 = document.getElementById('euro50').value;
+
+            // Calculate the total amount
+            var totalAmount50 = inputAmount50 * 50;
+
+            // Update the total amount in the "total50" element
+            document.getElementById('total50').innerText = '€' + totalAmount50;
+
+            // Get the input value euro20
+            var inputAmount20 = document.getElementById('euro20').value;
+
+            // Calculate the total amount
+            var totalAmount20 = inputAmount20 * 20;
+
+            // Update the total amount in the "total20" element
+            document.getElementById('total20').innerText = '€' + totalAmount20;
+
+            // Get the input value euro10
+            var inputAmount10 = document.getElementById('euro10').value;
+
+            // Calculate the total amount
+            var totalAmount10 = inputAmount10 * 10;
+
+            // Update the total amount in the "total10" element
+            document.getElementById('total10').innerText = '€' + totalAmount10;
+
+            // Get the input value euro5
+            var inputAmount5 = document.getElementById('euro5').value;
+
+            // Calculate the total amount
+            var totalAmount5 = inputAmount5 * 5;
+
+            // Update the total amount in the "total5" element
+            document.getElementById('total5').innerText = '€' + totalAmount5;
+
+            var totalAmountBill = totalAmount200 + totalAmount100 + totalAmount50 + totalAmount20 + totalAmount10 + totalAmount5;
+            document.getElementById('totalsub-bill').innerText = '€' + totalAmountBill.toFixed(2);
+
+            //coin
+
+            // Get the input value euro2
+            var inputAmount2 = document.getElementById('euro2').value;
+
+            // Calculate the total amount
+            var totalAmount2 = inputAmount2 * 2;
+
+            // Update the total amount in the "total10" element
+            document.getElementById('total2').innerText = '€' + totalAmount2.toFixed(2);
+
+            // Get the input value euro1
+            var inputAmount1 = document.getElementById('euro1').value;
+
+            // Calculate the total amount
+            var totalAmount1 = inputAmount1 * 1;
+
+            // Update the total amount in the "total1" element
+            document.getElementById('total1').innerText = '€' + totalAmount1.toFixed(2);
+
+            // Get the input value euro05
+            var inputAmount05 = document.getElementById('euro05').value;
+
+            // Calculate the total amount
+            var totalAmount05 = inputAmount05 * 0.5;
+
+            // Update the total amount in the "total05" element
+            document.getElementById('total05').innerText = '€' + totalAmount05.toFixed(2);
+
+            // Get the input value euro02
+            var inputAmount02 = document.getElementById('euro02').value;
+
+            // Calculate the total amount
+            var totalAmount02 = inputAmount02 * 0.2;
+
+            // Update the total amount in the "total02" element
+            document.getElementById('total02').innerText = '€' + totalAmount02.toFixed(2);
+
+            // Get the input value euro01
+            var inputAmount01 = document.getElementById('euro01').value;
+
+            // Calculate the total amount
+            var totalAmount01 = inputAmount01 * 0.1;
+
+            // Update the total amount in the "total01" element
+            document.getElementById('total01').innerText = '€' + totalAmount01.toFixed(2);
+
+            // Get the input value euro005
+            var inputAmount005 = document.getElementById('euro005').value;
+
+            // Calculate the total amount
+            var totalAmount005 = inputAmount005 * 0.05;
+
+            // Update the total amount in the "total005" element
+            document.getElementById('total005').innerText = '€' + totalAmount005.toFixed(2);
+
+            // Get the input value euro002
+            var inputAmount002 = document.getElementById('euro002').value;
+
+            // Calculate the total amount
+            var totalAmount002 = inputAmount002 * 0.02;
+
+            // Update the total amount in the "total002" element
+            document.getElementById('total002').innerText = '€' + totalAmount002.toFixed(2);
+
+            // Get the input value euro001
+            var inputAmount001 = document.getElementById('euro001').value;
+
+            // Calculate the total amount
+            var totalAmount001 = inputAmount001 * 0.01;
+
+            // Update the total amount in the "total001" element
+            document.getElementById('total001').innerText = '€' + totalAmount001.toFixed(2);
+
+            var totalAmountCoin = totalAmount2 + totalAmount1 + totalAmount05 + totalAmount02 + totalAmount01 + totalAmount005 + totalAmount002 + totalAmount001;
+            document.getElementById('totalsub-coin').innerText = '€' + totalAmountCoin.toFixed(2);
+
+            //coin stack
+
+            var totalAmountCoinStack = 0;
+            // Get the input value euro2
+            var inputAmount2Coinstack = document.getElementById('euroStack2').value;
+            totalAmountCoinStack += parseFloat(inputAmount2Coinstack) || 0;
+            // Get the input value euro1
+            var inputAmount1Coinstack = document.getElementById('euroStack1').value;
+            totalAmountCoinStack += parseFloat(inputAmount1Coinstack) || 0;
+            // Get the input value euro05
+            var inputAmount05Coinstack = document.getElementById('euroStack05').value;
+            totalAmountCoinStack += parseFloat(inputAmount05Coinstack) || 0;
+            // Get the input value euro02
+            var inputAmount02Coinstack = document.getElementById('euroStack02').value;
+            totalAmountCoinStack += parseFloat(inputAmount02Coinstack) || 0;
+            // Get the input value euro01
+            var inputAmount01Coinstack = document.getElementById('euroStack01').value;
+            totalAmountCoinStack += parseFloat(inputAmount01Coinstack) || 0;
+            // Get the input value euro005
+            var inputAmount005Coinstack = document.getElementById('euroStack005').value;
+            totalAmountCoinStack += parseFloat(inputAmount005Coinstack) || 0;
+            // Get the input value euro002
+            var inputAmount002Coinstack = document.getElementById('euroStack002').value;
+            totalAmountCoinStack += parseFloat(inputAmount002Coinstack) || 0;
+            // Get the input value euro001
+            var inputAmount001Coinstack = document.getElementById('euroStack001').value;
+            totalAmountCoinStack += parseFloat(inputAmount001Coinstack);
+
+            document.getElementById('totalsub-CoinStack').innerText = '€' + totalAmountCoinStack;
+
+
+            let sum = totalAmount200 + totalAmount100 + totalAmount50 + totalAmount20 + totalAmount10 + totalAmount5 + totalAmount2 + totalAmount1 + totalAmount05 + totalAmount02 + totalAmount01 + totalAmount005 + totalAmount002 + totalAmount001 + totalAmountCoinStack;
+            document.getElementById('display2').innerText = `Total Amount: €${sum.toFixed(2)}`;
+
+            var selectedOption = document.querySelector('input[name="countingOption"]:checked').value;
+
+            // Convert the selected option to a number
+            var selectedOptionValue = parseInt(selectedOption);
+            let diff = 0
+            // Compare with the sum
+            if (selectedOptionValue > sum) {
+                diff = selectedOptionValue - sum;
+                document.getElementById('display1').innerText = 'Too Less';
+                document.getElementById('display1').style.color = 'red';
+                document.getElementById('display3').innerText = `Missing amount: €${diff.toFixed(2)}`;
+            } else if (selectedOptionValue === sum) {
+                document.getElementById('display1').innerText = 'Perfect';
+                document.getElementById('display1').style.color = 'green';
+            } else if (selectedOptionValue < sum) {
+                diff = sum - selectedOptionValue;
+                document.getElementById('display1').innerText = 'Too much';
+                document.getElementById('display1').style.color = 'red';
+                document.getElementById('display3').innerText = `Surplus amount: €${diff.toFixed(2)}`;
+            }
+        }
+
+        window.onload = function () {
+            updateTotal();
+        };
+
+    </script>
+</body>
+
+</html>
